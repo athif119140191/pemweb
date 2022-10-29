@@ -1,0 +1,179 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<title>
+		119140191 Task 3
+	</title>
+	
+	<script src=
+"https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
+	</script>
+ 	<style>
+ 	  body {
+        padding: 25px;
+        background-color: white;
+        color: black;
+      }
+      .dark-mode {
+        background-color: black;
+        color: white;
+      } 	  
+      h1, h3 {
+      font-weight: 400;
+      }
+ 	  button {
+     	  width: 100px;
+     	  border-radius: 5px; 
+     	  border: none;
+     	  background: #019267; 
+     	  font-size: 14px;
+     	  font-weight: 600;
+     	  color: #fff;
+      }
+ 	  #table {
+          color: #444;
+          border-collapse: collapse;
+          border: 1px solid #f2f5f7;
+          margin-left: auto;
+          margin-right: auto;
+          background-color: #C1F4C5; 
+      }
+       
+      #table tr th{
+          background: #019267;
+          color: #fff;
+          font-weight: normal;
+      }
+       
+      #table, th, td {
+          padding: 8px 20px;
+          text-align: center;
+      }
+      #table1 tr:hover {
+   	      background-color: #f5f5f5;
+   	  }
+   	   
+   	  #table1 tr:nth-child(even) {
+   	      background-color: #f2f2f2;
+   	  }    
+    </style>
+</head>
+
+<body style = "text-align:center;" id = "body">
+	
+	<h1 id = "milik" style = "color:#019267;" ></h1>
+
+	<label for="ChangeTheme">
+  		<input type="checkbox" id="ChangeTheme" />
+  		<p id = "ChangeThemeTxt" style =
+		"font-size: 15px; font-weight: bold;">
+		</p>
+	</label>
+
+	<p id = "JSON_list" style =
+		"font-size: 15px; font-weight: bold;">
+	</p>
+
+	
+	<button id="togglee" onclick = "constructTable('#table')">
+		click here
+	</button>
+	
+	<br><br>
+	
+	<table align = "center"
+			id="table" border="1">
+	</table>
+	
+	<script>
+		var nama_milik = document.getElementById("milik");
+		nama_milik.innerHTML = "Athif Najmudin 119140191";
+
+		var checkbox = document.getElementById("ChangeTheme"); 
+		var themeTxt = document.getElementById("ChangeThemeTxt"); 
+
+		if (sessionStorage.getItem("mode") == "dark") {
+		  darkmode();
+		} else {
+		  nodark();
+		}
+		
+		checkbox.addEventListener("change", function() {
+		  if (checkbox.checked) {
+		    darkmode(); 
+		  } else {
+		    nodark(); 
+		  }
+		});
+		
+		function darkmode() {
+		  document.body.classList.add("dark-mode"); 
+		  checkbox.checked = true; 
+		  sessionStorage.setItem("mode", "dark");
+		  themeTxt.innerHTML = "Dark Mode"; 
+		}
+		
+		function nodark() {
+		  document.body.classList.remove("dark-mode"); 
+		  checkbox.checked = false;
+		  sessionStorage.setItem("mode", "light");
+		  themeTxt.innerHTML = "Light Mode"; 
+		}
+
+
+		var el_up = document.getElementById("JSON_list");
+		
+		var list = [
+			{ "Nama": "Santi", "Umur": "23", "Gaji": "2jt" },
+			{ "Nama": "Budi", "Gaji": "1jt", "Umur": "21" },
+			{ "Nama": "Andi", "Umur": "22", "Gaji": "4jt" },
+		];
+		
+		el_up.innerHTML = "<h3>Tekan tombol untuk mengubah data JSON ke tabel.</h3><br><br>"
+				+ JSON.stringify(list[0]) + "<br>"
+				+ JSON.stringify(list[1]) + "<br>"
+				+ JSON.stringify(list[2]);
+		//Susun isi tabel berdasarkan header	
+		function constructTable(selector) {
+			
+			var cols = Headers(list, selector);
+
+			for (var i = 0; i < list.length; i++) {
+				var row = $('<tr/>');
+				for (var colIndex = 0; colIndex < cols.length; colIndex++)
+				{
+					var val = list[i][cols[colIndex]];
+					
+					if (val == null) val = "";
+						row.append($('<td/>').html(val));
+				}
+				
+				$(selector).append(row);
+			}
+			document.getElementById('togglee').style.visibility = 'hidden';
+		}
+		//Buat header tabel
+		function Headers(list, selector) {
+			var columns = [];
+			var header = $('<tr/>');
+			
+			for (var i = 0; i < list.length; i++) {
+				var row = list[i];
+				
+				for (var k in row) {
+					if ($.inArray(k, columns) == -1) {
+						columns.push(k);
+						
+						header.append($('<th/>').html(k));
+					}
+				}
+			}
+			
+			$(selector).append(header);
+				return columns;
+		}	
+	</script>
+</body>
+
+</html>
